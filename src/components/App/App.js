@@ -1,4 +1,4 @@
-import logo from '../logo.svg';
+import logo from '/Users/reidpoole/poker/react-poker/src/logo.svg';
 import './App.css';
 
 function App() {
