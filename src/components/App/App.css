@@ -1,6 +1,36 @@
-/* App.css */
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f5f5f5;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  overflow: visible;  
+}
+.App, .Card-section {
+  position: relative;
+  z-index: 1;  /* Ensure they are below Player 1 */
+}
+
+.App-header {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  padding: 10px 0;
+  width: 100%;
+  text-align: center;
+  background-color: #282c34;
+  color: #61dafb;
+}
+
 .Card-section {
   display: flex;
   justify-content: center;
   gap: 20px;
+  margin-bottom: 20px;
 }
+
+/* You might want additional styles or modifications here. */

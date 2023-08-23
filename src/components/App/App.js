@@ -2,12 +2,13 @@ import React from 'react';
 import './App.css';
 import Card from '../Card/Card';  // Assuming CardComponent.js is in the same directory
 import Player from '../Player/Player';
-import user1 from '/Users/reidpoole/poker/react-poker/src/assets/user-1.jpg'
-import user2 from '/Users/reidpoole/poker/react-poker/src/assets/user-2.webp'
-import user3 from '/Users/reidpoole/poker/react-poker/src/assets/user-3.JPG'
-import user4 from '/Users/reidpoole/poker/react-poker/src/assets/user-4.JPEG'
-import user5 from '/Users/reidpoole/poker/react-poker/src/assets/user-5.jpeg'
-import user6 from '/Users/reidpoole/poker/react-poker/src/assets/user-6.jpeg'
+import PokerTable from '../PokerTable/PokerTable';
+import user1 from '../assets/user-1.jpg';
+import user2 from '../assets/user-2.webp';
+import user3 from '../assets/user-3.JPG';
+import user4 from '../assets/user-4.JPEG';
+import user5 from '../assets/user-5.jpeg';
+import user6 from '../assets/user-6.jpeg';
 
 
 const mockPlayers = [
@@ -23,22 +24,13 @@ function App() {
     <div className="App">
       <header className="App-header">
         <p>
-          Welcome to Poker with Reid Poole!
+          Welcome to Poker with Reid "Country Blues" Poole!
         </p>
       </header>
-        <div className="Card-section">
-          {/* Sample usage of Card component */}
-          <Card suit="HEARTS" value="A" />
-          <Card suit="CLUBS" value="10" />
-        </div>
-        <div className='Players-section'>
-    {mockPlayers.map(player => {
-        console.log(player);  // logging player here
-        return <Player key={player.id} player={player} />;  // explicitly returning the component
-    })}
-</div>
+      <PokerTable players={mockPlayers} />
     </div>
   );
 }
+
 
 export default App;

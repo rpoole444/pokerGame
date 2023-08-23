@@ -9,7 +9,33 @@
   width: 200px;
   background-color: #f9f9f9;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 10;
 }
+
+.player:nth-child(1) {
+  top: 5%;
+  left: 50%;
+  transform: translate(-50%, -100%); /* Make sure the player is fully above the center line */
+  z-index: 2;  /* This should put Player 1 above the poker table, assuming the table doesn't have a higher z-index */
+}
+.player:nth-child(2) { top: 20%; left: 100%; }
+
+.player:nth-child(3) { 
+    bottom: 5%; 
+    left: 100%; 
+}
+.player:nth-child(4) { 
+    bottom: -25%; 
+    left: 50%; 
+}
+.player:nth-child(5) { 
+    bottom: 5%; 
+    left: -5%; 
+}
+
+.player:nth-child(6) { top: 20%; left: -5%; }
 
 .player-name {
   font-size: 1.2em;
@@ -36,5 +62,6 @@
 .player-avatar img {
   width: 50px;
   height: 50px;
+  margin-bottom: 10px;
   border-radius: 50%; /* makes the image circular */
 }
