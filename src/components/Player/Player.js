@@ -14,7 +14,7 @@ const Player = ({ player }) => {
       </div>
       
       <div className="player-cards">
-        {player.cards && player.cards.map((card, index) => (
+        {player.hand && player.hand.map((card, index) => (
           <Card key={index} suit={card.suit} value={card.value} />
         ))}
       </div>

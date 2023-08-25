@@ -15,23 +15,24 @@
 }
 
 .player:nth-child(1) {
-  top: 5%;
+  top: calc(5% + 3vh);
   left: 50%;
-  transform: translate(-50%, -100%); /* Make sure the player is fully above the center line */
-  z-index: 2;  /* This should put Player 1 above the poker table, assuming the table doesn't have a higher z-index */
+  transform: translate(-50%, -100%);
+  z-index: 2;
 }
-.player:nth-child(2) { top: 20%; left: 100%; }
+
+.player:nth-child(2) { top: 20%; left: 110%; }
 
 .player:nth-child(3) { 
-    bottom: 5%; 
-    left: 100%; 
+    bottom: -10%; 
+    left: 105%; 
 }
 .player:nth-child(4) { 
-    bottom: -25%; 
+    bottom: -35%; 
     left: 50%; 
 }
 .player:nth-child(5) { 
-    bottom: 5%; 
+    bottom: -10%; 
     left: -5%; 
 }
 
