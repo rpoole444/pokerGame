@@ -45,7 +45,7 @@ function App() {
           Welcome to Poker with Reid "Country Blues" Poole!
         </p>
       </header>
-      <PokerTable players={mockPlayers} />
+      <PokerTable mockPlayers={mockPlayers} />
     </div>
   );
 }
