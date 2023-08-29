@@ -8,11 +8,19 @@ const PokerTable = ({ mockPlayers }) => {
     console.log(mockPlayers)
   const [currentPot, setCurrentPot] = useState(0);
   const [currentTurn, setCurrentTurn] = useState(0); // Assuming the player ID starts from 0
+  const [currentBet, setCurrentBet] = useState(5)
+  const [playerBet, setPlayerBet] = useState(0)
   const [players, setPlayers] = useState(mockPlayers || []);
   const [deck, setDeck] = useState(shuffleDeck());  
   const [communityCards, setCommunityCards] = useState([]);
 //   const [burnCards, setBurnCards] = useState([]);
   const [dealStage, setDealStage] = useState(0)
+
+  const [smallBlindPos, setSmallBlindPos] = useState(0);
+  const [bigBlindPos, setBigBlindPos] = useState(1);
+  const BIG_BLIND = 10;
+  const SMALL_BLIND = 5;
+
 
   function createDeck() {
     const suits = ["HEARTS", "DIAMONDS", "CLUBS", "SPADES"];
@@ -30,20 +38,38 @@ const PokerTable = ({ mockPlayers }) => {
   }
 
   function handleBet(playerId, amount) {
+    const betAmount = Number(amount);
     // Add the bet amount to the pot
-    setCurrentPot(prevPot => prevPot + amount);
+    setCurrentPot(prevPot => prevPot + betAmount);
     
-    // Deduct the bet amount from the player's chip stack
+    // Deduct the bet amount from the player's chip stack and update the player's current round bet
     const updatedPlayers = players.map(player => {
         if (player.id === playerId) {
-            return { ...player, chips: player.chips - amount };
+            const totalBetForThisRound = player.bet + betAmount;
+            return { 
+                ...player, 
+                chips: player.chips - betAmount, 
+                bet: totalBetForThisRound 
+            };
         }
         return player;
     });
+    setPlayers(updatedPlayers);
     
+    // Update the current bet if this bet is higher
+    if (amount > currentBet) {
+        setCurrentBet(amount);
+    }
+
     // Move to the next player's turn
-    setCurrentTurn((prevTurn) => (prevTurn + 1) % players.length);
+    let nextTurn = currentTurn;
+    do {
+        nextTurn = (nextTurn + 1) % players.length;
+    } while (players[nextTurn].hasFolded || players[nextTurn].bet === currentBet);
+    setCurrentTurn(nextTurn);
 }
+
+
 
 function handleFold(playerId) {
     // Mark the player as folded
@@ -71,6 +97,14 @@ function handleCheck() {
         case 0:  // Start of the game
             const shuffledDeck = shuffleDeck();
             setDeck(shuffledDeck);
+            handleBet(players[smallBlindPos].id, SMALL_BLIND);
+            handleBet(players[bigBlindPos].id, BIG_BLIND);
+
+            setCurrentBet(BIG_BLIND);  // After blinds are posted, set the current bet to BIG_BLIND
+
+            // Move the turn to the player after the big blind
+            setCurrentTurn((bigBlindPos + 1) % players.length);
+
 
             // Deal two cards to each player
             const updatedPlayers = players.map((player, index) => ({
@@ -107,6 +141,19 @@ function handleCheck() {
             break;
 
         default:  // Reset
+        if (dealStage === 4) {
+                let newSmallBlind = (smallBlindPos + 1) % players.length;
+                while (players[newSmallBlind].hasFolded) {
+                    newSmallBlind = (newSmallBlind + 1) % players.length;
+                }
+                let newBigBlind = (newSmallBlind + 1) % players.length;
+                while (players[newBigBlind].hasFolded) {
+                    newBigBlind = (newBigBlind + 1) % players.length;
+                }
+                setSmallBlindPos(newSmallBlind);
+                setBigBlindPos(newBigBlind);
+            }
+
             setDealStage(0);
             setCommunityCards([]);
             setPlayers(players.map(player => ({
@@ -131,6 +178,10 @@ function handleCheck() {
                 onFold={handleFold} 
                 onCheck={handleCheck}
                 isCurrentTurn={players[currentTurn] && players[currentTurn].id === player.id}
+                isSmallBlind={player.id === players[smallBlindPos].id}
+                isBigBlind={player.id === players[bigBlindPos].id}
+                currentBet={currentBet}
+                playerBet={playerBet || 0}
             />
         ))}
 
@@ -141,7 +192,7 @@ function handleCheck() {
             <div className="current-pot">Pot: ${currentPot}</div>
         </div>
             <button onClick={dealCards} className="deal-flop-btn">
-                {dealStage === 0 ? 'Deal Flop' : dealStage === 1 ? 'Deal Turn' : dealStage === 2 ? 'Deal River' : 'Reset Table'}
+                {dealStage === 0 ? 'Deal Cards' : dealStage === 1 ? 'Deal Flop' : dealStage === 2 ? 'Deal Turn' : dealStage === 3 ? 'Deal River' :'Reset Table'}
             </button>
 
             {/* More table components like community cards, dealer button, pot, etc. */}

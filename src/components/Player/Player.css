@@ -73,3 +73,12 @@
     margin-right: 10px;
     font-size: 14px;
 }
+
+.blind-tag,
+.folded-tag {
+    background-color: #eee;
+    margin-left: 10px;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 0.8em;
+}
