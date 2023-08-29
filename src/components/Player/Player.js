@@ -7,10 +7,12 @@ const Player = ({ player, onBet, onFold, onCheck, isCurrentTurn, currentBet, isS
     const [betAmount, setBetAmount] = useState(0);
 
     const playerBet = player.bet || 0;
-    const canBet = currentBet === 0 && playerBet === 0;
-    const canCheck = currentBet === 0 || currentBet === playerBet;
-    const canRaise = currentBet > playerBet; 
-    const canCall = currentBet > playerBet;
+   const canBet = currentBet === 0 && playerBet === 0;
+  const canCheck = currentBet === 0 || currentBet === playerBet;
+  const canRaise = currentBet > playerBet; 
+  const canCall = currentBet > playerBet && playerBet !== 0;
+
+
     const requiredCallAmount = currentBet - playerBet;
 
     const handleBet = (amount) => {
@@ -59,7 +61,7 @@ const Player = ({ player, onBet, onFold, onCheck, isCurrentTurn, currentBet, isS
                     {canBet && <button onClick={() => handleBet(betAmount)}>Bet</button>}
                     {canCheck && <button onClick={handleCheck}>Check</button>}
                     {canCall && <button onClick={() => handleBet(requiredCallAmount)}>Call</button>}
-                    {canRaise && <button onClick={() => handleBet(requiredCallAmount + betAmount)}>Raise</button>}
+                    {canRaise && !canBet && <button onClick={() => handleBet(requiredCallAmount + betAmount)}>Raise</button>}
                     <button onClick={handleFold}>Fold</button>
                 </div>
             ) : null}

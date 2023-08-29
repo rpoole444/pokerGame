@@ -8,7 +8,7 @@ const PokerTable = ({ mockPlayers }) => {
     console.log(mockPlayers)
   const [currentPot, setCurrentPot] = useState(0);
   const [currentTurn, setCurrentTurn] = useState(0); // Assuming the player ID starts from 0
-  const [currentBet, setCurrentBet] = useState(5)
+  const [currentBet, setCurrentBet] = useState(0)
   const [playerBet, setPlayerBet] = useState(0)
   const [players, setPlayers] = useState(mockPlayers || []);
   const [deck, setDeck] = useState(shuffleDeck());  
@@ -47,6 +47,7 @@ const PokerTable = ({ mockPlayers }) => {
     const updatedPlayers = players.map(player => {
         if (player.id === playerId) {
             const totalBetForThisRound = player.bet + betAmount;
+            setPlayerBet(prevBet => prevBet + betAmount);
             return { 
                 ...player, 
                 chips: player.chips - betAmount, 
@@ -60,6 +61,7 @@ const PokerTable = ({ mockPlayers }) => {
     // Update the current bet if this bet is higher
     if (amount > currentBet) {
         setCurrentBet(amount);
+
     }
 
     // Move to the next player's turn
@@ -98,21 +100,38 @@ function handleCheck() {
         case 0:  // Start of the game
             const shuffledDeck = shuffleDeck();
             setDeck(shuffledDeck);
-            handleBet(players[smallBlindPos].id, SMALL_BLIND);
-            handleBet(players[bigBlindPos].id, BIG_BLIND);
-
+            
+            // Handle blinds
+            const updatedPlayersAfterBlinds = players.map((player, index) => {
+              if (index === smallBlindPos) {
+                return {
+                  ...player,
+                  chips: player.chips - SMALL_BLIND,
+                  bet: SMALL_BLIND
+                };
+              } else if (index === bigBlindPos) {
+                return {
+                  ...player,
+                  chips: player.chips - BIG_BLIND,
+                  bet: BIG_BLIND
+                };
+              }
+              return player;
+            });
+            setPlayers(updatedPlayersAfterBlinds);
+            setCurrentPot(SMALL_BLIND + BIG_BLIND);
+            
             setCurrentBet(BIG_BLIND);  // After blinds are posted, set the current bet to BIG_BLIND
 
             // Move the turn to the player after the big blind
             setCurrentTurn((bigBlindPos + 1) % players.length);
 
-
             // Deal two cards to each player
-            const updatedPlayers = players.map((player, index) => ({
+            const updatedPlayersWithCards = updatedPlayersAfterBlinds.map((player, index) => ({
                 ...player,
                 hand: [shuffledDeck[index * 2], shuffledDeck[index * 2 + 1]]
             }));
-            setPlayers(updatedPlayers);
+            setPlayers(updatedPlayersWithCards);
             setDealStage(1);
             break;
 
