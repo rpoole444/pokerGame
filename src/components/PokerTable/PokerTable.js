@@ -38,6 +38,7 @@ const PokerTable = ({ mockPlayers }) => {
   }
 
   function handleBet(playerId, amount) {
+    
     const betAmount = Number(amount);
     // Add the bet amount to the pot
     setCurrentPot(prevPot => prevPot + betAmount);

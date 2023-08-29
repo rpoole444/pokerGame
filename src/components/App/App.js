@@ -12,12 +12,12 @@ import user6 from '../assets/user-6.jpeg';
 
 
 const mockPlayers = [
-  { id: 1, name: "Player 1", chips: 1000, avatar: user1, hand: [] },
-  { id: 2, name: "Player 2", chips: 1000, avatar: user2, hand: [] },
-  { id: 3, name: "Player 3", chips: 1000, avatar: user3,hand: [] },
-  { id: 4, name: "Player 4", chips: 1000, avatar: user4, hand: [] },
-  { id: 5, name: "Player 5", chips: 1000, avatar: user5, hand: [] },
-  { id: 6, name: "Player 6", chips: 1000, avatar: user6, hand: [] },
+  { id: 1, name: "Player 1", chips: 1000, avatar: user1, hand: [], hasFolded: false },
+  { id: 2, name: "Player 2", chips: 1000, avatar: user2, hand: [], hasFolded: false },
+  { id: 3, name: "Player 3", chips: 1000, avatar: user3, hand: [], hasFolded: false },
+  { id: 4, name: "Player 4", chips: 1000, avatar: user4, hand: [], hasFolded: false },
+  { id: 5, name: "Player 5", chips: 1000, avatar: user5, hand: [], hasFolded: false },
+  { id: 6, name: "Player 6", chips: 1000, avatar: user6, hand: [], hasFolded: false },
 ]
 function App() {
   return (

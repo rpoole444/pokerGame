@@ -10,7 +10,7 @@ const Player = ({ player, onBet, onFold, onCheck, isCurrentTurn, currentBet, isS
     const canBet = currentBet === 0 && playerBet === 0;
     const canCheck = currentBet === 0 || currentBet === playerBet;
     const canRaise = currentBet > playerBet; 
-    const canCall = currentBet > playerBet;  // Removing the unnecessary condition here
+    const canCall = currentBet > playerBet;
     const requiredCallAmount = currentBet - playerBet;
 
     const handleBet = (amount) => {
@@ -26,7 +26,7 @@ const Player = ({ player, onBet, onFold, onCheck, isCurrentTurn, currentBet, isS
     };
 
     return (
-        <div className={`player ${isCurrentTurn ? "active-turn" : ""}`}>
+        <div className={`player ${isCurrentTurn ? "active-turn" : ""} ${player.hasFolded ? "player-folded" : ""}`}>
             <div className="player-avatar">
                 <img src={player.avatar} alt={`${player.name}'s avatar`} />
             </div>
@@ -48,7 +48,7 @@ const Player = ({ player, onBet, onFold, onCheck, isCurrentTurn, currentBet, isS
                 Chips: {player.chips}
             </div>
 
-            {isCurrentTurn && (
+            {isCurrentTurn && !player.hasFolded ? (
                 <div className="player-actions">
                     <input 
                         type="number" 
@@ -62,7 +62,7 @@ const Player = ({ player, onBet, onFold, onCheck, isCurrentTurn, currentBet, isS
                     {canRaise && <button onClick={() => handleBet(requiredCallAmount + betAmount)}>Raise</button>}
                     <button onClick={handleFold}>Fold</button>
                 </div>
-            )}
+            ) : null}
         </div>
     );
 }
